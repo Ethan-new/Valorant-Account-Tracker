@@ -45,7 +45,7 @@ function SearchBar(adult) {
 }
 
 function PlayerCards(adult) {
-    console.log(adult)
+
     return(
     <Row xs={2} md={6} className="g-4">
     {adult.props.state.items.map((i) => (
@@ -57,8 +57,9 @@ function PlayerCards(adult) {
                 <Card.Text>
                 Last game rr gained/lost was: {i.data.mmr_change_to_last_game}
                 </Card.Text>
+                <Card.Link onClick={() => adult.onShow(i.data.name, i.data.tag)}>View Last 5 Ranked Games</Card.Link>
             </Card.Body>
-            <Card.Link onClick={() => adult.onShow(i.data.name, i.data.tag)}>View Last 5 Games</Card.Link>
+            
         </Card>
     </Col>
     ))}
@@ -66,8 +67,46 @@ function PlayerCards(adult) {
 )
 }
 
+
+function FindWinner (team, array) {
+
+    if (team == 1 && array.blue.has_won == true) {
+        return("bg-success")
+    } 
+    if (team == 1 && array.blue.has_won == false) {
+        return("bg-danger")
+    } 
+    if (team == 2 && array.red.has_won == true) {
+        return("bg-success")
+    } 
+    if (team == 2 && array.red.has_won == false) {
+        return("bg-danger")
+    } 
+}
+
+function FindMap (map, maparray) {
+
+    switch(map){
+        case "Ascent":
+            return (maparray[0].listViewIcon)
+        case "Split":
+            return (maparray[1].listViewIcon)
+        case "Fracture":
+            return (maparray[2].listViewIcon)
+        case "Bind":
+            return (maparray[3].listViewIcon)
+        case "Breeze":
+            return (maparray[4].listViewIcon)
+        case "Icebox":
+            return (maparray[5].listViewIcon)
+        case "Haven":
+            return (maparray[7].listViewIcon)
+    }
+
+    return (maparray[0].listViewIcon)
+}
 function PlayerMatchHistory(props) {
-    console.log(props)
+
 
     if (props.name != "" && props.isplayerset == false && props.modalShow == true) {
     fetch(
@@ -137,10 +176,6 @@ function PlayerMatchHistory(props) {
             </Modal>
           )
     } else if (props.isplayerset == true){
-
-
-        console.log("RIght b4 render")
-        console.log(props.player.data)
         return (
             <Modal
               {...props}
@@ -156,9 +191,10 @@ function PlayerMatchHistory(props) {
               <Modal.Body>
 
                 <Tabs defaultActiveKey="profile" id="uncontrolled-tab-example" className="mb-3">
-                        {props.player.data.map((i, idx) => (
+                        {props.player.data.map((x, idx) => (
                             <Tab eventKey={idx} title={"Game "+idx} >
-                                {i.metadata.map} - {i.metadata.cluster} Team 1: {i.teams.blue.rounds_won} Team 2: {i.teams.blue.rounds_lost}
+                                {x.metadata.map} - {x.metadata.cluster} Team 1: {x.teams.blue.rounds_won} Team 2: {x.teams.blue.rounds_lost}
+                                <Image src={FindMap(x.metadata.map,props.mapImgs)} responsive circle width="770" height="130"/>
                                 <div>
                                 <Table responsive="sm" striped 	>
                                     <thead>
@@ -174,29 +210,29 @@ function PlayerMatchHistory(props) {
                                     </thead>
                                     Team 1
                                     <tbody>
-                                    {i.players.blue.map((i, idx) => (
-                                        <tr>
-                                        <td>{i.name}#{i.tag}</td>
-                                        <td>{i.character} </td>
-                                        <td>{i.stats.kills}/{i.stats.deaths}/{i.stats.assists}</td>
-                                        <td>{i.stats.headshots}/{i.stats.bodyshots}/{i.stats.legshots}</td>
-                                        <td>{i.damage_made}/{i.damage_received}</td>
-                                        <td>{i.currenttier_patched}</td>
-                                        <td>{i.level}</td>
+                                    {x.players.blue.map((i, idx) => (
+                                        <tr >
+                                        <td class={FindWinner(1,x.teams)}>{i.name}#{i.tag}</td>
+                                        <td class={FindWinner(1,x.teams)}><Image src={i.assets.agent.small} responsive circle width="50"/> </td>
+                                        <td class={FindWinner(1,x.teams)}>{i.stats.kills}/{i.stats.deaths}/{i.stats.assists}</td>
+                                        <td class={FindWinner(1,x.teams)}>{i.stats.headshots}/{i.stats.bodyshots}/{i.stats.legshots}</td>
+                                        <td class={FindWinner(1,x.teams)}>{i.damage_made}/{i.damage_received}</td>
+                                        <td class={FindWinner(1,x.teams)}><Image src={props.rankedImgs[i.currenttier].smallIcon} responsive circle width="45"/> </td>
+                                        <td class={FindWinner(1,x.teams)}>{i.level}</td>
                                     </tr>
                                         ))}
                                     </tbody>
                                     Team 2
                                     <tbody>
-                                    {i.players.red.map((i, idx) => (
+                                    {x.players.red.map((i, idx) => (
                                         <tr>
-                                        <td>{i.name}#{i.tag}</td>
-                                        <td>{i.character} </td>
-                                        <td>{i.stats.kills}/{i.stats.deaths}/{i.stats.assists}</td>
-                                        <td>{i.stats.headshots}/{i.stats.bodyshots}/{i.stats.legshots}</td>
-                                        <td>{i.damage_made}/{i.damage_received}</td>
-                                        <td>{i.currenttier_patched}</td>
-                                        <td>{i.level}</td>
+                                        <td class={FindWinner(2,x.teams)}>{i.name}#{i.tag}</td>
+                                        <td class={FindWinner(2,x.teams)}><Image src={i.assets.agent.small} responsive circle width="50"/> </td>
+                                        <td class={FindWinner(2,x.teams)}>{i.stats.kills}/{i.stats.deaths}/{i.stats.assists}</td>
+                                        <td class={FindWinner(2,x.teams)}>{i.stats.headshots}/{i.stats.bodyshots}/{i.stats.legshots}</td>
+                                        <td class={FindWinner(2,x.teams)}>{i.damage_made}/{i.damage_received}</td>
+                                        <td class={FindWinner(2,x.teams)}><Image src={props.rankedImgs[i.currenttier].smallIcon} responsive circle width="45"/> </td>
+                                        <td class={FindWinner(2,x.teams)}>{i.level}</td>
                                     </tr>
                                         ))}
                                     </tbody>
@@ -206,14 +242,7 @@ function PlayerMatchHistory(props) {
 
                             </Tab>
                         ))}
-                    
-                    
-                        
-                    
                 </Tabs>
-
-
-                
               </Modal.Body>
               <Modal.Footer>
                 <Button onClick={props.onHide}>Close</Button>
@@ -240,7 +269,9 @@ class MatchHistory extends React.Component {
             selectedPlayerName:"",
             selectedPlayerTag:"",
             selectedPlayer:[],
-            isSelectedPlayerFound:false
+            isSelectedPlayerFound:false,
+            ranks: [],
+            maps:[]
         };
 
     this.handleChangeName = this.handleChangeName.bind(this);
@@ -253,7 +284,33 @@ class MatchHistory extends React.Component {
     // ComponentDidMount is used to
     // execute the code 
     componentDidMount() {
+        //get ranked imgs
+        fetch(
+            "https://valorant-api.com/v1/competitivetiers")
+            .then((res) => res.json())
+            .then((json) => {
 
+                this.setState({
+                    ranks: json.data[3].tiers,
+                });
+
+            })
+            .catch(error => {
+                console.error('There was an error!', error);
+            });
+                //get map imgs
+                fetch(
+                    "https://valorant-api.com/v1/maps")
+                    .then((res) => res.json())
+                    .then((json) => {
+                        this.setState({
+                            maps: json.data
+                        });
+        
+                    })
+                    .catch(error => {
+                        console.error('There was an error!', error);
+                    });
     }
 
     handleChangeName(event) {    this.setState({nameSearch: event.target.value});  }
@@ -291,7 +348,6 @@ class MatchHistory extends React.Component {
                     nameSearch: "",
                     tagSearch:""
                 });
-                console.log(this.state.items)
             })
             .catch(error => {
                 this.setState({
@@ -320,6 +376,8 @@ class MatchHistory extends React.Component {
                     isplayerset={this.state.isSelectedPlayerFound}
                     player={this.state.selectedPlayer}
                     modalShow={this.state.modalShow}
+                    rankedImgs={this.state.ranks}
+                    mapImgs={this.state.maps}
                     
                  />
             </div>
@@ -342,6 +400,8 @@ class MatchHistory extends React.Component {
                     isplayerset={this.state.isSelectedPlayerFound}
                     player={this.state.selectedPlayer}
                     modalShow={this.state.modalShow}
+                    rankedImgs={this.state.ranks}
+                    mapImgs={this.state.maps}
                  />
                 </div>
             )
