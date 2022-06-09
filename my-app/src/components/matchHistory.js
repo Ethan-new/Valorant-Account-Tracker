@@ -14,10 +14,13 @@ import Tab from "react-bootstrap/Tab"
 import Tabs from "react-bootstrap/Tabs"
 import Table from "react-bootstrap/Table"
 import Image from 'react-bootstrap/Image'
+
+import './home.css'
+
 function SearchBar(adult) {
         return (       
         <>
-        <p className="text-center">Search For A User. You do not have to include the # in tag.</p>             
+        <p className="text-center"> Search For A User. You do not have to include the # in tag.</p>             
         <Row>
             <Col></Col>
             <Col xs={8}>
@@ -182,6 +185,7 @@ function PlayerMatchHistory(props) {
               size="lg"
               aria-labelledby="contained-modal-title-vcenter"
               centered
+              className="my-modal"
             >
               <Modal.Header closeButton>
                 <Modal.Title id="contained-modal-title-vcenter">
@@ -193,10 +197,12 @@ function PlayerMatchHistory(props) {
                 <Tabs defaultActiveKey="profile" id="uncontrolled-tab-example" className="mb-3">
                         {props.player.data.map((x, idx) => (
                             <Tab eventKey={idx} title={"Game "+idx} >
+                                <p id="pmod">
                                 {x.metadata.map} - {x.metadata.cluster} Team 1: {x.teams.blue.rounds_won} Team 2: {x.teams.blue.rounds_lost}
+                                </p>
                                 <Image src={FindMap(x.metadata.map,props.mapImgs)} responsive circle width="770" height="130"/>
                                 <div>
-                                <Table responsive="sm" striped 	>
+                                <Table responsive="sm"  variant="dark"	>
                                     <thead>
                                     <tr>
                                         <th>Name</th>
@@ -238,8 +244,6 @@ function PlayerMatchHistory(props) {
                                     </tbody>
                                 </Table>
                                 </div>
-
-
                             </Tab>
                         ))}
                 </Tabs>
@@ -271,7 +275,8 @@ class MatchHistory extends React.Component {
             selectedPlayer:[],
             isSelectedPlayerFound:false,
             ranks: [],
-            maps:[]
+            maps:[],
+            isSearching:false
         };
 
     this.handleChangeName = this.handleChangeName.bind(this);
@@ -317,6 +322,9 @@ class MatchHistory extends React.Component {
     handleChangeTag(event) {    this.setState({tagSearch: event.target.value});  }
 
     handleSubmit(event) {
+        this.setState({
+            isSearching:true
+        });
         if (this.state.nameSearch == "" || this.state.tagSearch == "") {
             this.setState({
                 showAlert: true
@@ -358,6 +366,10 @@ class MatchHistory extends React.Component {
                 console.error('There was an error!', error);
             });
       event.preventDefault();
+
+      this.setState({
+        isSearching :false
+    });
     }
 
 
@@ -407,7 +419,7 @@ class MatchHistory extends React.Component {
             )
         } else {
             return (
-            <div>
+            <div className="wrapWholeSite">
   
                 <SearchBar props={this}/>
             </div>
