@@ -101,9 +101,11 @@ function FindMap (map, maparray) {
         case "Breeze":
             return (maparray[4].listViewIcon)
         case "Icebox":
-            return (maparray[5].listViewIcon)
+            return (maparray[6].listViewIcon)
         case "Haven":
-            return (maparray[7].listViewIcon)
+            return (maparray[8].listViewIcon)
+        case "Pearl":
+            return (maparray[5].listViewIcon)
     }
 
     return (maparray[0].listViewIcon)
@@ -111,7 +113,7 @@ function FindMap (map, maparray) {
 function PlayerMatchHistory(props) {
 
 
-    if (props.name != "" && props.isplayerset == false && props.modalShow == true) {
+    if (props.name != "" && props.isplayerset == false && props.modalshow == true) {
     fetch(
         "https://api.henrikdev.xyz/valorant/v3/matches/na/" +props.name +"/"+props.tag + "?filter=competitive")
         .then((res) => res.json())
@@ -119,13 +121,12 @@ function PlayerMatchHistory(props) {
         var temp = 1
             
             json.data.map((i, idx) => {
-                console.log(i.is_available)
                 if (i.is_available == false) {
                     json.remove(idx)
                 }
             })
             if (temp != 2) {
-                props.setPlayer(json)
+                props.setplayer(json)
             }
    
             console.log(json)
@@ -142,6 +143,7 @@ function PlayerMatchHistory(props) {
               size="lg"
               aria-labelledby="contained-modal-title-vcenter"
               centered
+              className="my-modal"
             >
               <Modal.Header closeButton>
                 <Modal.Title id="contained-modal-title-vcenter">
@@ -164,6 +166,7 @@ function PlayerMatchHistory(props) {
               size="lg"
               aria-labelledby="contained-modal-title-vcenter"
               centered
+              className="my-modal"
             >
               <Modal.Header closeButton>
                 <Modal.Title id="contained-modal-title-vcenter">
@@ -200,7 +203,7 @@ function PlayerMatchHistory(props) {
                                 <p id="pmod">
                                 {x.metadata.map} - {x.metadata.cluster} Team 1: {x.teams.blue.rounds_won} Team 2: {x.teams.blue.rounds_lost}
                                 </p>
-                                <Image src={FindMap(x.metadata.map,props.mapImgs)} responsive circle width="770" height="130"/>
+                                <Image src={FindMap(x.metadata.map,props.mapimgs)} responsive circle width="770" height="130"/>
                                 <div>
                                 <Table responsive="sm"  variant="dark"	>
                                     <thead>
@@ -223,7 +226,7 @@ function PlayerMatchHistory(props) {
                                         <td class={FindWinner(1,x.teams)}>{i.stats.kills}/{i.stats.deaths}/{i.stats.assists}</td>
                                         <td class={FindWinner(1,x.teams)}>{i.stats.headshots}/{i.stats.bodyshots}/{i.stats.legshots}</td>
                                         <td class={FindWinner(1,x.teams)}>{i.damage_made}/{i.damage_received}</td>
-                                        <td class={FindWinner(1,x.teams)}><Image src={props.rankedImgs[i.currenttier].smallIcon} responsive circle width="45"/> </td>
+                                        <td class={FindWinner(1,x.teams)}><Image  responsive circle width="45"/> </td>
                                         <td class={FindWinner(1,x.teams)}>{i.level}</td>
                                     </tr>
                                         ))}
@@ -237,7 +240,7 @@ function PlayerMatchHistory(props) {
                                         <td class={FindWinner(2,x.teams)}>{i.stats.kills}/{i.stats.deaths}/{i.stats.assists}</td>
                                         <td class={FindWinner(2,x.teams)}>{i.stats.headshots}/{i.stats.bodyshots}/{i.stats.legshots}</td>
                                         <td class={FindWinner(2,x.teams)}>{i.damage_made}/{i.damage_received}</td>
-                                        <td class={FindWinner(2,x.teams)}><Image src={props.rankedImgs[i.currenttier].smallIcon} responsive circle width="45"/> </td>
+                                        <td class={FindWinner(2,x.teams)}><Image  responsive circle width="45"/> </td>
                                         <td class={FindWinner(2,x.teams)}>{i.level}</td>
                                     </tr>
                                         ))}
@@ -269,7 +272,7 @@ class MatchHistory extends React.Component {
             tagSearch:"",
             DataisBad: false,
             showAlert:false,
-            modalShow: false,
+            modalshow: false,
             selectedPlayerName:"",
             selectedPlayerTag:"",
             selectedPlayer:[],
@@ -378,18 +381,18 @@ class MatchHistory extends React.Component {
         return (
             <div>
                 <SearchBar props={this}/>
-                <PlayerCards props={this} onShow={(name,tag) =>this.setState({modalShow: true,selectedPlayerName:name,selectedPlayerTag:tag})}/>
+                <PlayerCards props={this} onShow={(name,tag) =>this.setState({modalshow: true,selectedPlayerName:name,selectedPlayerTag:tag})}/>
                 <PlayerMatchHistory
-                    show={this.state.modalShow}
-                    onHide={() =>this.setState({modalShow: false,isSelectedPlayerFound:false})}
+                    show={this.state.modalshow}
+                    onHide={() =>this.setState({modalshow: false,isSelectedPlayerFound:false})}
                     name={this.state.selectedPlayerName}
                     tag={this.state.selectedPlayerTag}
-                    setPlayer={(player) =>this.setState({selectedPlayer:player,isSelectedPlayerFound:true})}
+                    setplayer={(player) =>this.setState({selectedPlayer:player,isSelectedPlayerFound:true})}
                     isplayerset={this.state.isSelectedPlayerFound}
                     player={this.state.selectedPlayer}
-                    modalShow={this.state.modalShow}
-                    rankedImgs={this.state.ranks}
-                    mapImgs={this.state.maps}
+                    modalshow={this.state.modalshow}
+                    rankedimgs={this.state.ranks}
+                    mapimgs={this.state.maps}
                     
                  />
             </div>
@@ -399,21 +402,21 @@ class MatchHistory extends React.Component {
             return (
                 <div>
                 <SearchBar props={this}/>
-                <PlayerCards props={this} onShow={(name,tag) =>this.setState({modalShow: true,selectedPlayerName:name,selectedPlayerTag:tag})}/>
+                <PlayerCards props={this} onShow={(name,tag) =>this.setState({modalshow: true,selectedPlayerName:name,selectedPlayerTag:tag})}/>
                 <Alert key="danger" variant="danger">
                     User Not Found (They may have private mode enabled or they do not exist)
                 </Alert>
                 <PlayerMatchHistory
-                    show={this.state.modalShow}
-                    onHide={() =>this.setState({modalShow: false,isSelectedPlayerFound:false})}
+                    show={this.state.modalshow}
+                    onHide={() =>this.setState({modalshow: false,isSelectedPlayerFound:false})}
                     name={this.state.selectedPlayerName}
                     tag={this.state.selectedPlayerTag}
-                    setPlayer={(player) =>this.setState({selectedPlayer:player,isSelectedPlayerFound:true})}
+                    setplayer={(player) =>this.setState({selectedPlayer:player,isSelectedPlayerFound:true})}
                     isplayerset={this.state.isSelectedPlayerFound}
                     player={this.state.selectedPlayer}
-                    modalShow={this.state.modalShow}
-                    rankedImgs={this.state.ranks}
-                    mapImgs={this.state.maps}
+                    modalshow={this.state.modalshow}
+                    rankedimgs={this.state.ranks}
+                    mapimgs={this.state.maps}
                  />
                 </div>
             )

@@ -9,3 +9,8 @@
 #pmod {
     color: white;
   }
+
+
+  .modal-backdrop {
+    background-color: red;
+ }
