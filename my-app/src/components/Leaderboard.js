@@ -55,17 +55,12 @@ class Leaderboard extends React.Component {
 
 
         return(
-            <div style={{        backgroundColor: 'black',
-            backgroundPosition: 'center',
-            backgroundSize: 'cover',
-            backgroundRepeat: 'repeat-y',
-            width: '100vw',
-            height: '100vh',
-            backgroundImage: `url(${background}`
-          }}>
+
+            <body>
+            <div className="" >
 
 
-                <Container id="leaderboardCon">
+                <Container id="leaderboardCon" className="">
                 <Row>
                     <Col></Col>
                     <Col xs={6}>
@@ -98,7 +93,7 @@ class Leaderboard extends React.Component {
                 </Container>
 
             </div>
-
+            </body>
         ) 
 
         

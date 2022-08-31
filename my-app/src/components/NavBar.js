@@ -38,7 +38,7 @@ class NavBar extends React.Component {
                     </Navbar.Brand>
                     <Nav className="me-auto">
                         <Nav.Link href="/">Home</Nav.Link>
-                        <Nav.Link href="/Leaderboard">Leaderboard</Nav.Link>
+                        <Nav.Link href="/" class="disabled">Leaderboard(Coming Soon)</Nav.Link>
                     </Nav>
                     </Container>
                 </Navbar>

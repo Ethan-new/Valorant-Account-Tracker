@@ -21,6 +21,8 @@ function SearchBar(adult) {
         return (       
         <>
         <p className="text-center"> Search For A User. You do not have to include the # in tag.</p>             
+        <p className="text-center"> Example name: spartan example tagline 8888</p>   
+        <p className="text-center"> Try it out!</p>  
         <Row>
             <Col></Col>
             <Col xs={8}>
