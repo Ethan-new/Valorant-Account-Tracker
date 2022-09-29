@@ -1,4 +1,5 @@
 # Valorant Account Tracker
+## Note: The Api being used is down for now needs to be fixed
 ## Demo: https://valorantingametracker.web.app/
 Search Spartan as the name and 8888 as the tagline
 ## What is this site for?
